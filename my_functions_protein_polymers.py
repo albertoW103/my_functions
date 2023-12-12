@@ -187,23 +187,38 @@ def get_polymers(sequence):
 
 
 
-def get_filtered_polymers(protein, polymers):
-    dxyz_connection = 0.4    
+def get_filtered_polymers(protein, polymers, cutoff_distance):
+    '''
+    The polymer it is just attached on the protein
+    '''
+    #dxyz_connection = 0.4    
     filtered_polymers = []
     
     for polymer in polymers:
        
-        # Calculate distane coordenate between all proteina and polymer beads:
+        # Calculate the distance between each coordinate of the polymer and those of the protein:
         dxyz_list = []
+        
+        # loop for protein:
         for coord_protein in range(len(protein)):
-        
+            
+            # coordenate for aminoacid in protein:
+            coord1 = np.array(protein[coord_protein][1:]) 
+            
+            # loop for polymer:
             for coord_polymer in range(len(polymer)):
-                coord1 = np.array(protein[coord_protein][1:])      # coordenate for aminoacid in protein 
-                coord2 = np.array(polymer[coord_polymer][1:])      # coordenate for bead in polymer
-                dxyz = np.linalg.norm(coord1 - coord2)             # calculate distance
-                dxyz_list.append(dxyz)                             # append distance
+                
+                # coordenate for bead in polymer:
+                coord2 = np.array(polymer[coord_polymer][1:])
+                
+                # calculate distance:
+                dxyz = np.linalg.norm(coord1 - coord2)
+                
+                # append distance:
+                dxyz_list.append(dxyz)
         
-        if any(element < dxyz_connection for element in dxyz_list): # skip structures with overlaping
+        # skip structures with overlaping:
+        if any(element < cutoff_distance for element in dxyz_list): 
             pass
             
         else:

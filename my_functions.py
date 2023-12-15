@@ -4,6 +4,8 @@ import os
 import matplotlib.font_manager as fm
 import matplotlib.ticker as mtick
 from matplotlib import rcParams, cycler
+from scipy.interpolate import Akima1DInterpolator
+import numpy as np
 
 # my functions:
 # style flag indicates function to style on plots
@@ -191,3 +193,42 @@ def molec_to_mg(mw):
     g_to_mg = 1000      # mg by g
     factor = (g_to_mg*mw*m_to_nm)/(avogadro)
     return factor
+    
+    
+def get_spline(x, y, n):
+    '''
+    x: list
+    y: list
+    n: # Adjust the number of points as needed  
+    '''
+    # create an Akima spline interpolator:
+    spline = Akima1DInterpolator(x, y)    
+    
+    # generate interpolated data:    
+    x_interpolated = np.linspace(min(x), max(x), n)
+    y_interpolated = spline(x_interpolated)    
+    
+    return x_interpolated, y_interpolated
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
